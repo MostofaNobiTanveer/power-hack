@@ -5,7 +5,7 @@ const APIFeatures = require('../utils/apiFeatures');
 
 // Get all Billings   =>   GET /api/billing-list
 exports.getBillings = catchAsyncErrors(async (req, res, next) => {
-  const resPerPage = 2;
+  const resPerPage = 10;
   const billingsCount = await Billing.countDocuments();
 
   // sum the paidAmount of all billings
