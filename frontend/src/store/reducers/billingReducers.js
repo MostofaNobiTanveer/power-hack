@@ -91,30 +91,30 @@ export const billingActionReducer = (state = {}, action) => {
         ...state,
         loading: true,
       };
-    case DELETE_BILLING_SUCCESS:
+    case UPDATE_BILLING_SUCCESS:
       return {
         ...state,
         loading: false,
         isUpdated: action.payload,
       };
-    case DELETE_BILLING_RESET:
+    case DELETE_BILLING_SUCCESS:
       return {
         ...state,
         loading: false,
         isDeleted: action.payload,
       };
-    case DELETE_BILLING_FAIL:
+    case UPDATE_BILLING_RESET:
       return {
         ...state,
         isUpdated: false,
       };
-    case UPDATE_BILLING_SUCCESS:
+    case DELETE_BILLING_RESET:
       return {
         ...state,
         isDeleted: false,
       };
-    case UPDATE_BILLING_RESET:
     case UPDATE_BILLING_FAIL:
+    case DELETE_BILLING_FAIL:
       return {
         ...state,
         loading: false,

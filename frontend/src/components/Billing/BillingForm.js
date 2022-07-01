@@ -13,44 +13,45 @@ import {
 
 const BillingForm = ({ close, updateBilling, updateData }) => {
   const { isUpdating, billing } = updateBilling;
-  console.log(updateBilling);
+
   const [billingData, setBillingData] = useState({
-    fullname: billing.fullname || '',
-    email: billing.email || '',
-    phone: billing.phone || '',
-    paidAmount: billing.paidAmount || '',
+    fullname: '',
+    email: '',
+    phone: '',
+    paidAmount: '',
   });
   const { fullname, email, phone, paidAmount } = billingData;
 
   const dispatch = useDispatch();
   const { loading, error, success } = useSelector((state) => state.newBilling);
-  const {
-    loading: updateloading,
-    error: updateerror,
-    success: updateSuccess,
-  } = useSelector((state) => state.billingAction);
+  const { loading: updateloading, isUpdated } = useSelector(
+    (state) => state.billingAction
+  );
 
   useEffect(() => {
-    isUpdating &&
-      setBillingData({
-        fullname: billing.fullname,
-        email: billing.email,
-        phone: billing.phone,
-        paidAmount: billing.paidAmount,
-      });
-  }, [billing]);
+    isUpdating
+      ? setBillingData({
+          fullname: billing.fullname,
+          email: billing.email,
+          phone: billing.phone,
+          paidAmount: billing.paidAmount,
+        })
+      : setBillingData({
+          fullname: '',
+          email: '',
+          phone: '',
+          paidAmount: '',
+        });
+  }, [billing, isUpdating]);
 
   useEffect(() => {
-    if (updateerror) {
-      return toast.error(updateerror);
-    }
-    if (updateSuccess) {
+    if (isUpdated) {
       toast.success('Billing updated successfully');
       dispatch({ type: UPDATE_BILLING_RESET });
       close();
       updateData();
     }
-  }, [updateerror, updateSuccess, updateData]);
+  }, [updateData, isUpdated, dispatch]);
 
   useEffect(() => {
     if (error) {
@@ -73,6 +74,7 @@ const BillingForm = ({ close, updateBilling, updateData }) => {
       dispatch(updateBillingData(billing._id, billingData));
     } else {
       dispatch(addNewBilling(billingData));
+      updateData();
     }
   };
   return (
@@ -185,7 +187,7 @@ const BillingForm = ({ close, updateBilling, updateData }) => {
             type="submit"
             className="inline-flex justify-center py-2 px-10 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {isUpdating ? 'Update Billing' : 'Add Billing'}
+            {isUpdating ? 'Update billing' : 'Add billing'}
           </button>
         </div>
       </div>
